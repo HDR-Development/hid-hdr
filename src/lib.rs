@@ -172,7 +172,8 @@ pub fn warn_unable_to_connect(discord_channel: &str, mod_name: &str, invite: &st
             it in the #{discord_channel} channel in the {mod_name} discord @ {invite}"#
         ),
         "Ok",
-    );
+    )
+    .show();
 }
 
 #[cfg(feature = "warnings")]
@@ -187,7 +188,8 @@ pub fn warn_status(status: Status, discord_channel: &str, mod_name: &str, invite
                     channel in the {mod_name} discord @ {invite}"#
                 ),
                 "Ok",
-            );
+            )
+            .show();
         }
         Status::NoRecenterFound => {
             skyline_web::DialogOk::new(
@@ -197,7 +199,8 @@ pub fn warn_status(status: Status, discord_channel: &str, mod_name: &str, invite
                     channel in the {mod_name} discord @ {invite}"#
                 ),
                 "Ok",
-            );
+            )
+            .show();
         }
         Status::NoMapSticks1Found => {
             skyline_web::DialogOk::new(
@@ -207,7 +210,7 @@ pub fn warn_status(status: Status, discord_channel: &str, mod_name: &str, invite
                     channel in the {mod_name} discord @ {invite}"#
                 ),
                 "Ok",
-            );
+            ).show();
         }
         Status::NoMapSticks2Found => {
             skyline_web::DialogOk::new(
@@ -217,7 +220,7 @@ pub fn warn_status(status: Status, discord_channel: &str, mod_name: &str, invite
                     channel in the {mod_name} discord @ {invite}"#
                 ),
                 "Ok",
-            );
+            ).show();
         }
         Status::NotPresentOnSD => {
             skyline_web::DialogOk::new(
@@ -227,7 +230,8 @@ pub fn warn_status(status: Status, discord_channel: &str, mod_name: &str, invite
                     channel in the {mod_name} discord @ {invite}"#
                 ),
                 "Ok",
-            );
+            )
+            .show();
         }
         Status::Unknown(error) => {
             skyline_web::DialogOk::new(
@@ -237,7 +241,8 @@ pub fn warn_status(status: Status, discord_channel: &str, mod_name: &str, invite
                     channel in the {mod_name} discord @ {invite}"#
                 ),
                 "Ok",
-            );
+            )
+            .show();
         }
     }
 }
