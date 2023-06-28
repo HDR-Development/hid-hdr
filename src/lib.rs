@@ -1,4 +1,7 @@
-use std::sync::atomic::{AtomicU32, Ordering};
+use std::{
+    path::Path,
+    sync::atomic::{AtomicU32, Ordering},
+};
 
 pub enum Status {
     Ok,
@@ -6,6 +9,7 @@ pub enum Status {
     NoMapSticks1Found,
     NoMapSticks2Found,
     NotConnected,
+    NotPresentOnSD,
     Unknown(u8),
 }
 
@@ -90,6 +94,17 @@ svcSendSyncRequest:
 );
 
 pub fn get_hid_hdr_status() -> Result<Status, u32> {
+    const PATHS: &[&'static str] = &[
+        "sd:/atmosphere/contents/0100000000000013/exefs/main.npdm",
+        "sd:/atmosphere/contents/0100000000000013/exefs/rtld",
+    ];
+
+    for path in PATHS {
+        if !Path::new(path).exists() {
+            return Ok(Status::NotPresentOnSD);
+        }
+    }
+
     let handle = CONNECTED_HANDLE.load(Ordering::Acquire);
     if handle == 0 {
         return Ok(Status::NotConnected);
@@ -147,6 +162,20 @@ pub fn configure_stick_gate_changes(enable: bool) -> Result<bool, u32> {
     }
 }
 
+#[cfg(feature = "warnings")]
+pub fn warn_unable_to_connect(discord_channel: &str, mod_name: &str, invite: &str) {
+    skyline_web::DialogOk::new(
+        format!(
+            r#"{mod_name} is unable to connect to the HID system module.
+            Usually this can be fixed by restarting your console (rebooting to payload
+            is good enough). If this error continues, screenshot this and send
+            it in the #{discord_channel} channel in the {mod_name} discord @ {invite}"#
+        ),
+        "Ok",
+    );
+}
+
+#[cfg(feature = "warnings")]
 pub fn warn_status(status: Status, discord_channel: &str, mod_name: &str, invite: &str) {
     match status {
         Status::Ok => {}
@@ -184,6 +213,16 @@ pub fn warn_status(status: Status, discord_channel: &str, mod_name: &str, invite
             skyline_web::DialogOk::new(
                 format!(
                     r#"The HID system module was unable to find the second stick mapping function call.
+                    Please screenshot this and send it in the #{discord_channel}
+                    channel in the {mod_name} discord @ {invite}"#
+                ),
+                "Ok",
+            );
+        }
+        Status::NotPresentOnSD => {
+            skyline_web::DialogOk::new(
+                format!(
+                    r#"The HID system module change is not present on the SD card.
                     Please screenshot this and send it in the #{discord_channel}
                     channel in the {mod_name} discord @ {invite}"#
                 ),
