@@ -164,7 +164,7 @@ pub fn configure_stick_gate_changes(enable: bool) -> Result<bool, u32> {
 
 #[cfg(feature = "warnings")]
 pub fn warn_unable_to_connect(discord_channel: &str, mod_name: &str, invite: &str) {
-    skyline_web::DialogOk::new(
+    skyline_web::dialog_ok::DialogOk::new(
         format!(
             r#"{mod_name} is unable to connect to the HID system module.
             Usually this can be fixed by restarting your console (rebooting to payload
@@ -181,7 +181,7 @@ pub fn warn_status(status: Status, discord_channel: &str, mod_name: &str, invite
     match status {
         Status::Ok => {}
         Status::NotConnected => {
-            skyline_web::DialogOk::new(
+            skyline_web::dialog_ok::DialogOk::new(
                 format!(
                     r#"{mod_name} is not connected with the HID system module.
                     This is a dev error, screenshot this and send it in the #{discord_channel}
@@ -192,7 +192,7 @@ pub fn warn_status(status: Status, discord_channel: &str, mod_name: &str, invite
             .show();
         }
         Status::NoRecenterFound => {
-            skyline_web::DialogOk::new(
+            skyline_web::dialog_ok::DialogOk::new(
                 format!(
                     r#"The HID system module was unable to find the stick recentering code.
                     Please screenshot this and send it in the #{discord_channel}
@@ -203,7 +203,7 @@ pub fn warn_status(status: Status, discord_channel: &str, mod_name: &str, invite
             .show();
         }
         Status::NoMapSticks1Found => {
-            skyline_web::DialogOk::new(
+            skyline_web::dialog_ok::DialogOk::new(
                 format!(
                     r#"The HID system module was unable to find the first stick mapping function call.
                     Please screenshot this and send it in the #{discord_channel}
@@ -213,7 +213,7 @@ pub fn warn_status(status: Status, discord_channel: &str, mod_name: &str, invite
             ).show();
         }
         Status::NoMapSticks2Found => {
-            skyline_web::DialogOk::new(
+            skyline_web::dialog_ok::DialogOk::new(
                 format!(
                     r#"The HID system module was unable to find the second stick mapping function call.
                     Please screenshot this and send it in the #{discord_channel}
@@ -223,7 +223,7 @@ pub fn warn_status(status: Status, discord_channel: &str, mod_name: &str, invite
             ).show();
         }
         Status::NotPresentOnSD => {
-            skyline_web::DialogOk::new(
+            skyline_web::dialog_ok::DialogOk::new(
                 format!(
                     r#"The HID system module change is not present on the SD card.
                     Please screenshot this and send it in the #{discord_channel}
@@ -234,7 +234,7 @@ pub fn warn_status(status: Status, discord_channel: &str, mod_name: &str, invite
             .show();
         }
         Status::Unknown(error) => {
-            skyline_web::DialogOk::new(
+            skyline_web::dialog_ok::DialogOk::new(
                 format!(
                     r#"The HID system module had some kind of unknown error. Code: {error:#}
                     Please screenshot this and send it in the #{discord_channel}
